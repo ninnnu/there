@@ -1,5 +1,6 @@
 package There::Algo::AES;
 use strict;
+use Crypt::Random;
 use Crypt::Rijndael;
 use Digest::SHA qw(sha256);
 
@@ -52,8 +53,7 @@ sub encrypt
 
     print("padding length: $padding_length") if $::There::Algo::AES::DEBUG > 1;
 
-    my $init_vector="";
-    $init_vector .= chr(int(rand(256))) for (1..16);
+    my $init_vector = Crypt::Random::makerandom_octet(Strength => 1, Length => 16);
 
     my $ciphertext = $self->_encrypt($init_vector, 
 				     $self->_gimme256($key),
